@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Web Zikri</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .login-container, .welcome-page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease;
+  }
+
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  input {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+  }
+
+  button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #666;
+  }
+
+  video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  #musicBtn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container" id="loginPage">
+  <h2>Login Web Zikri</h2>
+  <input type="text" id="username" placeholder="Username bebas">
+  <input type="password" id="password" placeholder="Password (5 huruf)">
+  <button onclick="login()">Masuk</button>
+</div>
+
+<div class="welcome-page hidden" id="welcomePage">
+  <video id="bgVideo" autoplay muted loop></video>
+  <h1>Selamat datang di web Zikri<br>terimakasih sudah mengunjungi web saya</h1>
+  <button id="musicBtn" onclick="toggleMusic()">🎵</button>
+</div>
+
+<script>
+  const video = document.getElementById('bgVideo');
+  const musicBtn = document.getElementById('musicBtn');
+  let isMusicOn = false;
+  let audio = null;
+
+  async function login() {
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    if (pass.length !== 5) {
+      alert('Password harus 5 huruf!');
+      return;
+    }
+
+    // animasi pindah halaman
+    document.getElementById('loginPage').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('welcomePage').classList.remove('hidden');
+      startVideo();
+    }, 1000);
+  }
+
+  function startVideo() {
+    video.src = "https://files.catbox.moe/z3r3ef.mp4";
+    video.addEventListener('loadeddata', () => {
+      video.play();
+      // siapin musik dari video
+      setupAudio();
+      musicBtn.style.display = 'block';
+    });
+  }
+
+  function setupAudio() {
+    audio = new Audio("https://files.catbox.moe/z3r3ef.mp4");
+    audio.loop = true;
+    audio.volume = 0.8;
+  }
+
+  function toggleMusic() {
+    if (!audio) return;
+    if (isMusicOn) {
+      audio.pause();
+      musicBtn.textContent = "🔇";
+    } else {
+      audio.play();
+      musicBtn.textContent = "🎵";
+    }
+    isMusicOn = !isMusicOn;
+  }
+</script>
+
+</body>
+</html>
